@@ -37,6 +37,7 @@ Two = Table('two', metadata,
     Column('id', Integer, primary_key=True),
     Column('content', String(16), nullable=False)
 )
+Two.create(engine, checkfirst=True)
 
 # Link Models to get data
 Base.metadata.create_all(engine)
@@ -49,10 +50,10 @@ for one in session.query(One).all():
     print("Field One:{} - Field Two:{}".format(one.one, one.two))
 
 # Insert content to table TWO
-insertQuery = Two.insert().values(id=1, content="Vamos Tio")
+insertQuery = Two.insert().values(content="Vamos Tio de vuelta")
 
 # Print SQL Alchemy Query
-print(insertQuery)
+# print(insertQuery)
 
 connection.execute(insertQuery)
 for two in session.query(Two).all():
