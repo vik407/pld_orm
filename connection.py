@@ -34,6 +34,7 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 for one in session.query(One).all():
-        print(one)
+        # Using def __str__ can use -> print(one)
+        print("Field One:{} - Field Two:{}".format(one.one, one.two))
 
 session.close()
