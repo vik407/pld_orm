@@ -19,7 +19,8 @@ class One(Base):
 
     one = Column(String(10),
                 nullable=False,
-                default='papi'
+                default='papi',
+                primary_key=True
                 )
     two = Column(Integer,
                 nullable=False
@@ -31,3 +32,8 @@ class One(Base):
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
+
+for one in session.query(One).all():
+        print(one)
+
+session.close()
