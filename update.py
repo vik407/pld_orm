@@ -2,7 +2,7 @@
 # PLD Session
 # Table structure one (one varchar(10), two smallint)
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, mapper
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Table, MetaData
 
@@ -33,11 +33,15 @@ class One(Base):
 
 # Create a new table
 metadata = MetaData()
-Two = Table('two', metadata,
+two = Table('two', metadata,
     Column('id', Integer, primary_key=True),
     Column('content', String(16), nullable=False)
 )
-Two.create(engine, checkfirst=True)
+class Two(object):
+    def __init__(self, content):
+        self.content = content
+
+two.create(engine, checkfirst=True)
 
 # Link Models to get data
 Base.metadata.create_all(engine)
@@ -53,10 +57,11 @@ for one in session.query(One).all():
 # insertQuery = Two.insert().values(content="Vamos Tio de vuelta")
 
 # Update content on table TWO
-updateQuery = Two.update().values(content="Vamos Tio de vuelta").where(Two.__table__.id==3)
+mapper(Two, two)
+session.query(Two).filter_by(id=3).update({'content': 'This is the new value Tio'})
 
 # Print SQL Alchemy Query
-print(updateQuery)
+#print(updateQuery)
 
 #connection.execute(insertQuery)
 for two in session.query(Two).all():
