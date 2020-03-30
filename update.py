@@ -31,13 +31,12 @@ class One(Base):
     def __str__(self):
         return self.one + " " + str(self.two)
 
-
 # Create a new table
 metadata = MetaData()
 Two = Table('two', metadata,
-            Column('id', Integer, primary_key=True),
-            Column('content', String(16), nullable=False)
-            )
+    Column('id', Integer, primary_key=True),
+    Column('content', String(16), nullable=False)
+)
 Two.create(engine, checkfirst=True)
 
 # Link Models to get data
@@ -51,12 +50,15 @@ for one in session.query(One).all():
     print("Field One:{} - Field Two:{}".format(one.one, one.two))
 
 # Insert content to table TWO
-insertQuery = Two.insert().values(content="Vamos Tio de vuelta")
+# insertQuery = Two.insert().values(content="Vamos Tio de vuelta")
+
+# Update content on table TWO
+updateQuery = Two.update().values(content="Vamos Tio de vuelta").where(Two.__table__.id==3)
 
 # Print SQL Alchemy Query
-# print(insertQuery)
+print(updateQuery)
 
-connection.execute(insertQuery)
+#connection.execute(insertQuery)
 for two in session.query(Two).all():
     print("id:{} - content:{}".format(two.id, two.content))
 
