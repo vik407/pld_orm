@@ -11,6 +11,9 @@ Base = declarative_base()
 engine = create_engine('sqlite:///orm.db')
 connection = engine.connect()
 
+# - - - - - - - - - 
+# Create Model One
+# - - - - - - - - - 
 class One(Base):
     __tablename__ = 'one'
 
@@ -19,5 +22,12 @@ class One(Base):
                 default='papi'
                 )
     two = Column(Integer,
-                
+                nullable=False
                 )
+    def __str__(self):
+        return self.one +" " +str(self.two)
+
+# Link Models to get data
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
