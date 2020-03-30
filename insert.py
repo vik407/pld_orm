@@ -54,5 +54,9 @@ insertQuery = Two.insert().values(id=1, content="Vamos Tio")
 # Print SQL Alchemy Query
 print(insertQuery)
 
+connection.execute(insertQuery)
+for two in session.query(Two).all():
+    print("id:{} - content:{}".format(two.id, two.content))
+
 session.close()
 connection.close()
